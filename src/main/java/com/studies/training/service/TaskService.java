@@ -33,7 +33,7 @@ public class TaskService {
     }
 
     public Task update(Task task, long id) {
-        Task obj = repository.getReferenceById(id);
+        var obj = repository.findById(id).orElseThrow();
         taskUpdate(obj, task);
         return repository.save(obj);
     }
