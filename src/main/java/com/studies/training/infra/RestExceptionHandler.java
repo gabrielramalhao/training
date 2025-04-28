@@ -1,5 +1,7 @@
 package com.studies.training.infra;
 
+import java.time.Instant;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,12 +15,17 @@ import com.studies.training.exceptions.InvalidInputException;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(IdNotFoundException.class)
-    private ResponseEntity<String> idNotFoundHandler(IdNotFoundException exception) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Id não encontrado");
+    private ResponseEntity<RestErrorMessage> idNotFoundHandler(IdNotFoundException exception) {
+        RestErrorMessage threatResponse = new RestErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR,
+                Instant.now(),
+                "Id não encontrado");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(threatResponse);
     }
 
     @ExceptionHandler(InvalidInputException.class)
-    private ResponseEntity<String> InvalidInputHandler(InvalidInputException exception) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Campo não pode ser vazio");
+    private ResponseEntity<RestErrorMessage> InvalidInputHandler(InvalidInputException exception) {
+        RestErrorMessage threatResponse = new RestErrorMessage(HttpStatus.BAD_REQUEST, Instant.now(),
+                "O campo não pode estar vazio");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(threatResponse);
     }
 }
