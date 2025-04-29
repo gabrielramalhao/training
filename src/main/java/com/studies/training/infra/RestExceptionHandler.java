@@ -14,15 +14,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(IdNotFoundException.class)
     private ResponseEntity<RestErrorMessage> idNotFoundHandler(IdNotFoundException exception) {
-        RestErrorMessage threatResponse = new RestErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR,
-                "Id não encontrado");
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(threatResponse);
+        var status = HttpStatus.INTERNAL_SERVER_ERROR;
+        RestErrorMessage threatResponse = new RestErrorMessage(status,
+                exception.getMessage());
+        return ResponseEntity.status(status).body(threatResponse);
     }
 
     @ExceptionHandler(InvalidInputException.class)
     private ResponseEntity<RestErrorMessage> InvalidInputHandler(InvalidInputException exception) {
-        RestErrorMessage threatResponse = new RestErrorMessage(HttpStatus.BAD_REQUEST,
-                "O campo não pode estar vazio");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(threatResponse);
+        var status = HttpStatus.BAD_REQUEST;
+        RestErrorMessage threatResponse = new RestErrorMessage(status,
+                exception.getMessage());
+        return ResponseEntity.status(status).body(threatResponse);
     }
 }

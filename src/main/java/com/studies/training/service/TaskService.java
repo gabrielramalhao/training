@@ -33,7 +33,8 @@ public class TaskService {
     }
 
     public void remove(long id) {
-        repository.deleteById(id);
+        var obj = repository.findById(id).orElseThrow(() -> new IdNotFoundException());
+        repository.deleteById(obj.getId());
     }
 
     public Task update(Task task, long id) {

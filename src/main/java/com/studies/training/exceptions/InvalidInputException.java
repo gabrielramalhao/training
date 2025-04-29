@@ -3,7 +3,7 @@ package com.studies.training.exceptions;
 public class InvalidInputException extends RuntimeException {
 
     public InvalidInputException() {
-        super("Os dados não podem estar vazios");
+        super("O campo não pode estar vazio");
     }
 
     public InvalidInputException(String message) {
