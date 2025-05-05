@@ -1,16 +1,13 @@
 package com.studies.training.infra;
 
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 import org.springframework.http.HttpStatus;
 
 public class RestErrorMessage {
 
     private HttpStatus status;
-    private String time;
+    private Instant time;
     private String message;
 
     public RestErrorMessage() {
@@ -19,7 +16,7 @@ public class RestErrorMessage {
 
     public RestErrorMessage(HttpStatus status, String message) {
         this.status = status;
-        this.time = formattedInstantTime();
+        this.time = Instant.now();
         this.message = message;
     }
 
@@ -27,7 +24,7 @@ public class RestErrorMessage {
         return status;
     }
 
-    public String getTime() {
+    public Instant getTime() {
         return time;
     }
 
@@ -41,14 +38,5 @@ public class RestErrorMessage {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    private String formattedInstantTime() {
-        Instant instant = Instant.now();
-        ZoneId zoneId = ZoneId.of("GMT-3");
-        ZonedDateTime zonedDateTime = instant.atZone(zoneId);
-        DateTimeFormatter dmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        String formattedTime = zonedDateTime.format(dmt);
-        return formattedTime;
     }
 }

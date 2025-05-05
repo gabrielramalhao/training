@@ -18,15 +18,19 @@ public class Task {
     private String name;
     @NotNull
     private String content;
+    private boolean isChecked;
+    @NotNull
+    private String conclusionExpectacion;
 
     public Task() {
 
     }
 
-    public Task(Long id, String name, String content) {
-        this.id = id;
+    public Task(String name, String content, String conclusionExpectacion) {
         this.name = name;
         this.content = content;
+        this.isChecked = false;
+        this.conclusionExpectacion = conclusionExpectacion;
     }
 
     public Long getId() {
@@ -51,6 +55,22 @@ public class Task {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public boolean getIsChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean isChecked) {
+        this.isChecked = isChecked;
+    }
+
+    public String getConclusionExpectacion() {
+        return conclusionExpectacion;
+    }
+
+    public void setConclusionExpectacion(String conclusionExpectacion) {
+        this.conclusionExpectacion = conclusionExpectacion;
     }
 
     @Override

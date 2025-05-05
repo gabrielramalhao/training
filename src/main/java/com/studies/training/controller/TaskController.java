@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.studies.training.dto.TaskDTO;
 import com.studies.training.model.Task;
 import com.studies.training.service.TaskService;
 
@@ -36,8 +37,18 @@ public class TaskController {
         return ResponseEntity.ok(service.findById(id));
     }
 
+    @GetMapping("/{id}/check")
+    public ResponseEntity<Task> checkedTask(@PathVariable long id) {
+        return ResponseEntity.ok(service.checkedTask(id));
+    }
+
+    @GetMapping("/{id}/conclusion")
+    public ResponseEntity<String> compareConclusionExpectation(@PathVariable long id) {
+        return ResponseEntity.ok(service.compareConclusionExpectation(id));
+    }
+
     @PostMapping
-    public ResponseEntity<Task> insert(@Valid @RequestBody Task task) {
+    public ResponseEntity<Task> insert(@Valid @RequestBody TaskDTO task) {
         var obj = service.insert(task);
         return ResponseEntity.status(HttpStatus.CREATED).body(obj);
     }
@@ -49,7 +60,7 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> update(@Valid @RequestBody Task task, @PathVariable long id) {
+    public ResponseEntity<Task> update(@Valid @RequestBody TaskDTO task, @PathVariable long id) {
         return ResponseEntity.ok(service.update(task, id));
     }
 }
