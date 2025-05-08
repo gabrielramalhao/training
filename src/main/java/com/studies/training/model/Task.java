@@ -1,5 +1,7 @@
 package com.studies.training.model;
 
+import com.studies.training.dto.TaskDTO;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,11 +28,20 @@ public class Task {
 
     }
 
-    public Task(String name, String content, String conclusionExpectacion) {
+    public Task(Long id, @NotNull String name, @NotNull String content, @NotNull String conclusionExpectacion) {
+        this.id = id;
         this.name = name;
         this.content = content;
         this.isChecked = false;
-        this.conclusionExpectacion = conclusionExpectacion;
+        this.conclusionExpectacion = conclusionExpectacion + " 00:00:00";
+    }
+
+    public Task(TaskDTO data) {
+        this.id = data.id();
+        this.name = data.name();
+        this.content = data.content();
+        this.isChecked = false;
+        this.conclusionExpectacion = data.conclusionExpectacion() + " 00:00:00";
     }
 
     public Long getId() {

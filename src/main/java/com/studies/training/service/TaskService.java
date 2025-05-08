@@ -35,7 +35,7 @@ public class TaskService {
         if (task.name() == "" || task.content() == "") {
             throw new InvalidInputException();
         }
-        return repository.save(new Task(task.name(), task.content(), task.conclusionExpectacion()));
+        return repository.save(new Task(task));
     }
 
     public void remove(long id) {
