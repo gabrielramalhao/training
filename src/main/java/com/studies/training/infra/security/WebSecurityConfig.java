@@ -1,5 +1,6 @@
 package com.studies.training.infra.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -15,6 +16,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
+    @Value("${password}")
+    private String password;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((aut) -> aut.anyRequest().authenticated())
@@ -25,13 +29,21 @@ public class WebSecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
+
         @SuppressWarnings("deprecation")
-        UserDetails userdetails = User.withDefaultPasswordEncoder()
-                .username("gab")
-                .password("123")
+        UserDetails user = User.withDefaultPasswordEncoder()
+                .username("user")
+                .password(password)
                 .roles("USER")
                 .build();
 
-        return new InMemoryUserDetailsManager(userdetails);
+        @SuppressWarnings("deprecation")
+        UserDetails admin = User.withDefaultPasswordEncoder()
+                .username("admin")
+                .password(password)
+                .roles("USER", "ADMIN")
+                .build();
+
+        return new InMemoryUserDetailsManager(user, admin);
     }
 }
