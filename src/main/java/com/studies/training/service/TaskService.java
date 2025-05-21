@@ -8,11 +8,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authorization.method.HandleAuthorizationDenied;
 import org.springframework.stereotype.Service;
 
 import com.studies.training.dto.TaskDTO;
 import com.studies.training.exceptions.IdNotFoundException;
 import com.studies.training.exceptions.InvalidInputException;
+import com.studies.training.infra.AuthenticationMethodHandler;
 import com.studies.training.model.Task;
 import com.studies.training.repository.TaskRepository;
 
@@ -38,6 +41,8 @@ public class TaskService {
         return repository.save(new Task(task));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @HandleAuthorizationDenied(handlerClass = AuthenticationMethodHandler.class)
     public void remove(long id) {
         var obj = repository.findById(id).orElseThrow(() -> new IdNotFoundException());
         repository.deleteById(obj.getId());
