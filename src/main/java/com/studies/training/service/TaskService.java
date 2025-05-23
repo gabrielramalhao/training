@@ -25,6 +25,9 @@ public class TaskService {
     @Autowired
     private TaskRepository repository;
 
+    @Autowired
+    private TwilioService twilio;
+
     public List<Task> findAll() {
         return repository.findAll();
     }
@@ -60,8 +63,10 @@ public class TaskService {
         var currentTime = Instant.now();
         if (currentConclusionExpectation.isBefore(currentTime)) {
             repository.deleteById(obj.getId());
+            twilio.sendMessage("A atividade venceu e será excluída.");
             return "A atividade venceu e será excluída.";
         }
+        twilio.sendMessage("A atividade ainda possui tempo para ser concluída.");
         return "A atividade ainda possui tempo para ser concluída.";
     }
 
@@ -82,7 +87,7 @@ public class TaskService {
 
     private Instant parse(String dateTimeString) {
         ZoneId zoneId = ZoneId.of("GMT-3");
-        DateTimeFormatter dmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        DateTimeFormatter dmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
         if (dateTimeString == null || dateTimeString.isEmpty()) {
             throw new InvalidInputException();
